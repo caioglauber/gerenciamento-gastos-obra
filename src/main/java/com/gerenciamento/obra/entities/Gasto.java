@@ -18,145 +18,153 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "tb_gasto")
 public class Gasto implements Serializable {
-	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	private String descricao;
-	private Double valor;
-	private LocalDate data;
-	private Integer status;
-	
-	@ManyToOne
-	@JoinColumn(name = "id_obra")
-	private Obra obra;
-	
-	@ManyToOne
-	@JoinColumn(name = "id_pagador")
-	private Pagador pagador;
-	
-	@ManyToOne
-	@JoinColumn(name = "id_fornecedor")
-	private Fornecedor fornecedor;
-	
-	@ManyToOne
-	@JoinColumn(name = "id_tipo_gasto")
-	private TipoGasto tipoGasto;
-	
-	public Gasto() {
-		// TODO Auto-generated constructor stub
-	}
 
-	
+    private static final long serialVersionUID = 1L;
 
-	public Gasto(Long id, String descricao, Double valor, LocalDate data, StatusGasto statusGasto, Obra obra, Pagador pagador,
-			Fornecedor fornecedor, TipoGasto tipoGasto) {
-		super();
-		this.id = id;
-		this.descricao = descricao;
-		this.valor = valor;
-		this.data = data;
-		this.obra = obra;
-		this.pagador = pagador;
-		this.fornecedor = fornecedor;
-		this.tipoGasto = tipoGasto;
-		setStatus(statusGasto);
-		
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	public Long getId() {
-		return id;
-	}
+    private String descricao;
+    private Double valor;
+    private LocalDate data;
+    private Integer status;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @ManyToOne
+    @JoinColumn(name = "id_obra")
+    private Obra obra;
 
-	public String getDescricao() {
-		return descricao;
-	}
+    @ManyToOne
+    @JoinColumn(name = "id_pagador")
+    private Pagador pagador;
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
+    @ManyToOne
+    @JoinColumn(name = "id_fornecedor")
+    private Fornecedor fornecedor;
 
-	public Double getValor() {
-		return valor;
-	}
+    @ManyToOne
+    @JoinColumn(name = "id_tipo_gasto")
+    private TipoGasto tipoGasto;
 
-	public void setValor(Double valor) {
-		this.valor = valor;
-	}
+    public Gasto() {
+    }
 
-	public LocalDate getData() {
-		return data;
-	}
+    public Gasto(
+            Long id,
+            String descricao,
+            Double valor,
+            LocalDate data,
+            StatusGasto statusGasto,
+            Obra obra,
+            Pagador pagador,
+            Fornecedor fornecedor,
+            TipoGasto tipoGasto) {
 
-	public void setData(LocalDate data) {
-		this.data = data;
-	}
-	
+        this.id = id;
+        this.descricao = descricao;
+        this.valor = valor;
+        this.data = data;
 
-	public Integer getStatus() {
-		return status;
-	}
+        if (statusGasto != null) {
+            this.status = statusGasto.getCode();
+        }
 
-	public void setStatus(StatusGasto statusGasto) {
-		if (statusGasto != null) {
-			this.status = statusGasto.getCode();
-		}
-	}
+        this.obra = obra;
+        this.pagador = pagador;
+        this.fornecedor = fornecedor;
+        this.tipoGasto = tipoGasto;
+    }
 
-	public Obra getObra() {
-		return obra;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setObra(Obra obra) {
-		this.obra = obra;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public Pagador getPagador() {
-		return pagador;
-	}
+    public String getDescricao() {
+        return descricao;
+    }
 
-	public void setPagador(Pagador pagador) {
-		this.pagador = pagador;
-	}
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
 
-	public Fornecedor getFornecedor() {
-		return fornecedor;
-	}
+    public Double getValor() {
+        return valor;
+    }
 
-	public void setFornecedor(Fornecedor fornecedor) {
-		this.fornecedor = fornecedor;
-	}
+    public void setValor(Double valor) {
+        this.valor = valor;
+    }
 
-	public TipoGasto getTipoGasto() {
-		return tipoGasto;
-	}
+    public LocalDate getData() {
+        return data;
+    }
 
-	public void setTipoGasto(TipoGasto tipoGasto) {
-		this.tipoGasto = tipoGasto;
-	}
+    public void setData(LocalDate data) {
+        this.data = data;
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
-	}
+    public Integer getStatus() {
+        return status;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Gasto other = (Gasto) obj;
-		return Objects.equals(id, other.id);
-	}
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Obra getObra() {
+        return obra;
+    }
+
+    public void setObra(Obra obra) {
+        this.obra = obra;
+    }
+
+    public Pagador getPagador() {
+        return pagador;
+    }
+
+    public void setPagador(Pagador pagador) {
+        this.pagador = pagador;
+    }
+
+    public Fornecedor getFornecedor() {
+        return fornecedor;
+    }
+
+    public void setFornecedor(Fornecedor fornecedor) {
+        this.fornecedor = fornecedor;
+    }
+
+    public TipoGasto getTipoGasto() {
+        return tipoGasto;
+    }
+
+    public void setTipoGasto(TipoGasto tipoGasto) {
+        this.tipoGasto = tipoGasto;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Gasto other = (Gasto) obj;
+        return Objects.equals(id, other.id);
+    }
 	
 	
 	
