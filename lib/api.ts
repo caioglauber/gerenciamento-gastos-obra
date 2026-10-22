@@ -38,6 +38,14 @@ export type Gasto = {
   tipoGasto?: Entity
 }
 
+async function requestJson<T>(path: string, init: RequestInit): Promise<T> {
+  const response = await fetch(`${getBaseUrl()}${path}`, { ...init, headers: { Accept: "application/json", "Content-Type": "application/json", ...init.headers } })
+  const contentType = response.headers.get("content-type") ?? ""
+  const body = contentType.includes("application/json") ? await response.json() : await response.text()
+  if (!response.ok) throw new Error(`Erro ${response.status} ao consultar ${path}`)
+  return body as T
+}
+
 async function getCollection<T>(path: string): Promise<T[]> {
   const response = await fetch(`${getBaseUrl()}${path}`, {
     cache: "no-store",
@@ -61,6 +69,7 @@ async function getCollection<T>(path: string): Promise<T[]> {
 
 export const api = {
   gastos: () => getCollection<Gasto>("/gastos"),
+  criarGasto: (gasto: Omit<Gasto, "id" | "obra" | "pagador" | "fornecedor" | "tipoGasto">) => requestJson<Gasto>("/gastos", { method: "POST", body: JSON.stringify(gasto) }),
   obras: () => getCollection<Entity>("/obras"),
   fornecedores: () => getCollection<Entity>("/fornecedores"),
   tipos: () => getCollection<Entity>("/tipo-gastos"),
