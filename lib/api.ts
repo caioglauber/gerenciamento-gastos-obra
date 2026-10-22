@@ -1,3 +1,5 @@
+const BACKEND_ORIGIN = "https://gerenciamento-gastos-obra.onrender.com"
+
 function getBaseUrl() {
   const configuredBaseUrl = process.env.NEXT_PUBLIC_API_URL?.trim()
 
@@ -5,7 +7,18 @@ function getBaseUrl() {
     throw new Error("NEXT_PUBLIC_API_URL não está configurada")
   }
 
-  return configuredBaseUrl.replace(/\/$/, "")
+  const withProtocol = /^https?:\/\//i.test(configuredBaseUrl)
+    ? configuredBaseUrl
+    : `https://${configuredBaseUrl}`
+  const parsedUrl = new URL(withProtocol)
+
+  if (parsedUrl.hostname !== "gerenciamento-gastos-obra.onrender.com") {
+    throw new Error(
+      `NEXT_PUBLIC_API_URL inválida. Use exatamente ${BACKEND_ORIGIN}`,
+    )
+  }
+
+  return BACKEND_ORIGIN
 }
 
 export type Entity = {
