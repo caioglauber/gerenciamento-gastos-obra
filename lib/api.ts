@@ -84,7 +84,9 @@ export const api = {
   atualizarGasto: (id: number, gasto: CreateGasto) => requestJson<Gasto>(`/gastos/${id}`, { method: "PUT", body: JSON.stringify(gasto) }),
   excluirGasto: (id: number) => requestJson<void>(`/gastos/${id}`, { method: "DELETE" }),
   obras: () => getCollection<Entity>("/obras"),
+  criarObra: (obra: { nome: string }) => requestJson<Entity>("/obras", { method: "POST", body: JSON.stringify(obra) }),
   fornecedores: () => getCollection<Entity>("/fornecedores"),
+  criarFornecedor: (fornecedor: { nome: string }) => requestJson<Entity>("/fornecedores", { method: "POST", body: JSON.stringify(fornecedor) }),
   tipos: () => getCollection<Entity>("/tipo-gastos"),
   pagadores: () => getCollection<Entity>("/pagadores"),
 }
