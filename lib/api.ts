@@ -26,6 +26,17 @@ export type Entity = {
   nome: string
 }
 
+export type CreateGasto = {
+  descricao: string
+  valor: number
+  data: string
+  status: number
+  obra: { id: number }
+  pagador: { id: number }
+  fornecedor: { id: number }
+  tipoGasto: { id: number }
+}
+
 export type Gasto = {
   id: number
   descricao: string
@@ -69,7 +80,7 @@ async function getCollection<T>(path: string): Promise<T[]> {
 
 export const api = {
   gastos: () => getCollection<Gasto>("/gastos"),
-  criarGasto: (gasto: Omit<Gasto, "id" | "obra" | "pagador" | "fornecedor" | "tipoGasto">) => requestJson<Gasto>("/gastos", { method: "POST", body: JSON.stringify(gasto) }),
+  criarGasto: (gasto: CreateGasto) => requestJson<Gasto>("/gastos", { method: "POST", body: JSON.stringify(gasto) }),
   obras: () => getCollection<Entity>("/obras"),
   fornecedores: () => getCollection<Entity>("/fornecedores"),
   tipos: () => getCollection<Entity>("/tipo-gastos"),
