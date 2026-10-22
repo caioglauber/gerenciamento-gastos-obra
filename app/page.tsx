@@ -39,11 +39,13 @@ export default function Home() {
     }).finally(() => setLoading(false))
   }, [])
   const monthGastos = useMemo(() => gastos.filter(g => { const d = new Date(`${g.data}T12:00:00`); return d.getMonth() === selectedMonth && d.getFullYear() === selectedYear }), [gastos, selectedMonth, selectedYear])
-  const total = monthGastos.reduce((sum, g) => sum + (g.valor || 0), 0)
-  const paid = monthGastos.filter(g => g.status === 51).reduce((sum, g) => sum + (g.valor || 0), 0)
-  const pending = monthGastos.filter(g => g.status === 50).reduce((sum, g) => sum + (g.valor || 0), 0)
-  const byType = Object.values(monthGastos.reduce<Record<string, { name: string; value: number }>>((acc, g) => { const name = g.tipoGasto?.nome || "Sem tipo"; acc[name] = acc[name] || { name, value: 0 }; acc[name].value += g.valor || 0; return acc }, {})).sort((a,b) => b.value-a.value)
-  const byWork = obras.map(o => ({ ...o, total: monthGastos.filter(g => g.obra?.id === o.id).reduce((s,g) => s + (g.valor || 0), 0) })).filter(o => o.total > 0).sort((a,b) => b.total-a.total)
+  const activeGastos = useMemo(() => monthGastos.filter(g => g.status === 50 || g.status === 51), [monthGastos])
+  const total = activeGastos.reduce((sum, g) => sum + (g.valor || 0), 0)
+  const paid = activeGastos.filter(g => g.status === 51).reduce((sum, g) => sum + (g.valor || 0), 0)
+  const pending = activeGastos.filter(g => g.status === 50).reduce((sum, g) => sum + (g.valor || 0), 0)
+  const byType = Object.values(activeGastos.reduce<Record<string, { name: string; value: number }>>((acc, g) => { const name = g.tipoGasto?.nome || "Sem tipo"; acc[name] = acc[name] || { name, value: 0 }; acc[name].value += g.valor || 0; return acc }, {})).sort((a,b) => b.value-a.value)
+  const byWork = obras.map(o => ({ ...o, total: activeGastos.filter(g => g.obra?.id === o.id).reduce((s,g) => s + (g.valor || 0), 0) })).filter(o => o.total > 0).sort((a,b) => b.total-a.total)
+  const activeCount = activeGastos.length
   const maxWork = Math.max(...byWork.map(o => o.total), 1)
   const openNewExpense = () => { setFormError(""); setSuccessMessage(""); setIsNewExpenseOpen(true) }
   const closeNewExpense = () => { if (!isSubmitting) setIsNewExpenseOpen(false) }
