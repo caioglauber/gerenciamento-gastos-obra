@@ -81,6 +81,8 @@ async function getCollection<T>(path: string): Promise<T[]> {
 export const api = {
   gastos: () => getCollection<Gasto>("/gastos"),
   criarGasto: (gasto: CreateGasto) => requestJson<Gasto>("/gastos", { method: "POST", body: JSON.stringify(gasto) }),
+  atualizarGasto: (id: number, gasto: CreateGasto) => requestJson<Gasto>(`/gastos/${id}`, { method: "PUT", body: JSON.stringify(gasto) }),
+  excluirGasto: (id: number) => requestJson<void>(`/gastos/${id}`, { method: "DELETE" }),
   obras: () => getCollection<Entity>("/obras"),
   fornecedores: () => getCollection<Entity>("/fornecedores"),
   tipos: () => getCollection<Entity>("/tipo-gastos"),
